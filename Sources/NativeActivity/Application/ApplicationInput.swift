@@ -1,9 +1,9 @@
 import NativeAppGlue
 
-public protocol ApplicationInput {
+protocol ApplicationInput {
     func input(app: UnsafeMutablePointer<android_app>, event: OpaquePointer?) throws
 }
 
-public extension ApplicationInput {
+extension ApplicationInput {
     func input(app: UnsafeMutablePointer<android_app>, event: OpaquePointer?) throws {}
 }

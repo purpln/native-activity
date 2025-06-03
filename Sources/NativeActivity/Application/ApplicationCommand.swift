@@ -1,6 +1,6 @@
 import NativeAppGlue
 
-public protocol ApplicationCommand {
+protocol ApplicationCommand {
     func configurationChanged(app: UnsafeMutablePointer<android_app>)
     func saveState(app: UnsafeMutablePointer<android_app>)
     func start(app: UnsafeMutablePointer<android_app>)
@@ -19,7 +19,7 @@ public protocol ApplicationCommand {
     func inputChanged(app: UnsafeMutablePointer<android_app>)
 }
 
-public extension ApplicationCommand {
+extension ApplicationCommand {
     func configurationChanged(app: UnsafeMutablePointer<android_app>) {}
     func saveState(app: UnsafeMutablePointer<android_app>) {}
     func start(app: UnsafeMutablePointer<android_app>) {}
