@@ -1,10 +1,12 @@
 import Android
 
 public protocol NativeActivityDelegate: AnyObject {
-    func launched()
-    func destroying()
+    func launch()
+    func destroy()
     func back()
     func animate()
+    func active(window: OpaquePointer?)
+    func resign(window: OpaquePointer?)
     func foreground(window: OpaquePointer?)
     func background(window: OpaquePointer?)
     func initialize(window: OpaquePointer?)
@@ -17,12 +19,14 @@ public protocol NativeActivityDelegate: AnyObject {
 }
 
 public extension NativeActivityDelegate {
-    func launched() {}
-    func destroying() {}
+    func launch() {}
+    func destroy() {}
     func back() {}
     func animate() {
         usleep(1000)
     }
+    func active(window: OpaquePointer?) {}
+    func resign(window: OpaquePointer?) {}
     func foreground(window: OpaquePointer?) {}
     func background(window: OpaquePointer?) {}
     func initialize(window: OpaquePointer?) {}

@@ -30,7 +30,7 @@ public class NativeActivity: @unchecked Sendable {
     }
     
     public func run() {
-        delegate?.launched()
+        delegate?.launch()
         
         let pointer: UnsafeMutablePointer<UnsafeMutableRawPointer?> = .allocate(capacity: 1)
         defer {
@@ -54,17 +54,41 @@ public class NativeActivity: @unchecked Sendable {
             }
         } while instance.destroyRequested == 0
         
-        delegate?.destroying()
+        delegate?.destroy()
     }
     
     public func destroy() {
-        if instance.activityState == APP_CMD_RESUME {
-            ANativeActivity_finish(instance.activity)
-        }
+        guard instance.activityState == APP_CMD_RESUME else { return }
+        
+        ANativeActivity_finish(instance.activity)
     }
 }
 
 extension NativeActivity: ApplicationCommand {
+    func resume(app: UnsafeMutablePointer<android_app>) {
+        let window = app.pointee.window
+        
+        delegate?.foreground(window: window)
+    }
+    
+    func pause(app: UnsafeMutablePointer<android_app>) {
+        let window = app.pointee.window
+        
+        delegate?.background(window: window)
+    }
+    
+    func gainedFocus(app: UnsafeMutablePointer<android_app>) {
+        let window = app.pointee.window
+        
+        delegate?.active(window: window)
+    }
+    
+    func lostFocus(app: UnsafeMutablePointer<android_app>) {
+        let window = app.pointee.window
+        
+        delegate?.resign(window: window)
+    }
+    
     func initializeWindow(app: UnsafeMutablePointer<android_app>) {
         let window = app.pointee.window
         
@@ -88,18 +112,6 @@ extension NativeActivity: ApplicationCommand {
         let height = ANativeWindow_getHeight(window)
         
         delegate?.layout(window: window, width: width, height: height)
-    }
-    
-    func gainedFocus(app: UnsafeMutablePointer<android_app>) {
-        let window = app.pointee.window
-        
-        delegate?.foreground(window: window)
-    }
-    
-    func lostFocus(app: UnsafeMutablePointer<android_app>) {
-        let window = app.pointee.window
-        
-        delegate?.background(window: window)
     }
 }
 
