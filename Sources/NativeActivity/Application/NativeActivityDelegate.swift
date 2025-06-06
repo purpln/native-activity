@@ -1,7 +1,10 @@
+import Android
+
 public protocol NativeActivityDelegate: AnyObject {
     func launched()
     func destroying()
     func back()
+    func animate()
     func foreground(window: OpaquePointer?)
     func background(window: OpaquePointer?)
     func initialize(window: OpaquePointer?)
@@ -17,6 +20,9 @@ public extension NativeActivityDelegate {
     func launched() {}
     func destroying() {}
     func back() {}
+    func animate() {
+        usleep(1000)
+    }
     func foreground(window: OpaquePointer?) {}
     func background(window: OpaquePointer?) {}
     func initialize(window: OpaquePointer?) {}

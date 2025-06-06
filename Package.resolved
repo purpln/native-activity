@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AndroidEntry",
+        "repositoryURL": "https://github.com/purpln/android-entry.git",
+        "state": {
+          "branch": "main",
+          "revision": "ca459e137f23a76c6b8df0909b88a663a30e09a1",
+          "version": null
+        }
+      },
+      {
+        "package": "AndroidLog",
+        "repositoryURL": "https://github.com/purpln/android-log.git",
+        "state": {
+          "branch": "main",
+          "revision": "96955ff8db34619c8ba48eec2302b04703b5ab8c",
+          "version": null
+        }
+      },
+      {
+        "package": "NativeAppGlue",
+        "repositoryURL": "https://github.com/purpln/native-app-glue.git",
+        "state": {
+          "branch": "main",
+          "revision": "3b4f5f010439f1120513341f0691533c8425f766",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

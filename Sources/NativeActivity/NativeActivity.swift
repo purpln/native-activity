@@ -1,4 +1,3 @@
-import Android
 import AndroidLog
 import AndroidEntry
 import NativeAppGlue
@@ -51,7 +50,7 @@ public class NativeActivity: @unchecked Sendable {
             }
             
             if animating {
-                usleep(1000)
+                delegate?.animate()
             }
         } while instance.destroyRequested == 0
         
