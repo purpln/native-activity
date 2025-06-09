@@ -187,10 +187,10 @@ extension NativeActivity: ApplicationInput {
             switch action {
             case .down:
                 delegate?.touchesBegan(window: window, touches: touches)
-            case .move:
-                delegate?.touchesMoved(window: window, touches: touches)
             case .up:
                 delegate?.touchesEnded(window: window, touches: touches)
+            case .move:
+                delegate?.touchesMoved(window: window, touches: touches)
             case .cancel:
                 delegate?.touchesCancelled(window: window, touches: touches)
             default: break
@@ -207,32 +207,57 @@ extension NativeActivity: ApplicationInput {
                 print("mouse:", key, action)
                 
             case .motion:
-                guard let action = MotionEventAction(rawValue: AMotionEvent_getAction(event) & CInt(AMOTION_EVENT_ACTION_MASK)) else {
+                let action = AMotionEvent_getAction(event)
+                let pointer = (Int(action) & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT
+                guard let action = MotionEventAction(rawValue: action & CInt(AMOTION_EVENT_ACTION_MASK)) else {
                     throw NativeActivityInputError.mouseMotion
                 }
-                let x = AMotionEvent_getX(event, 0)
-                let y = AMotionEvent_getY(event, 0)
                 
-                switch action {
-                case .down, .up:
-                    _ = MotionEventButton(rawValue: AMotionEvent_getButtonState(event))
-                case .move, .hoverMove:
-                    break
-                case .scroll:
-                    _ = AMotionEvent_getAxisValue(event, MotionEventAxis.hScroll.rawValue, 0)
-                    _ = AMotionEvent_getAxisValue(event, MotionEventAxis.vScroll.rawValue, 0)
-                default: break
+                //InputEventTool(rawValue: AMotionEvent_getToolType(event, pointer))
+                
+                func index(for button: MotionEventButton) -> Int? {
+                    switch button {
+                    case .primary: return 0
+                    case .secondary: return 1
+                    case .tertiary: return 2
+                    default: return nil
+                    }
                 }
                 
-                print("mouse:", x, y)
+                let x = AMotionEvent_getX(event, pointer)
+                let y = AMotionEvent_getY(event, pointer)
+                let window = app.pointee.window
+                
+                switch action {
+                case .buttonPress:
+                    let button = MotionEventButton(rawValue: AMotionEvent_getActionButton(event))
+                    guard let index = index(for: button) else { break }
+                    delegate?.mouseDown(window: window, x: x, y: y, index: index)
+                case .buttonRelease:
+                    let button = MotionEventButton(rawValue: AMotionEvent_getActionButton(event))
+                    guard let index = index(for: button) else { break }
+                    delegate?.mouseUp(window: window, x: x, y: y, index: index)
+                case .move:
+                    let button = MotionEventButton(rawValue: AMotionEvent_getButtonState(event))
+                    guard let index = index(for: button) else { break }
+                    delegate?.mouseDragged(window: window, x: x, y: y, index: index)
+                case .hoverMove:
+                    delegate?.mouseMoved(window: window, x: x, y: y)
+                case .scroll:
+                    let horizontal = AMotionEvent_getAxisValue(event, MotionEventAxis.hScroll.rawValue, pointer)
+                    let vertical = AMotionEvent_getAxisValue(event, MotionEventAxis.vScroll.rawValue, pointer)
+                    delegate?.mouseScroll(window: window, x: x, y: y, vertical: vertical, horizontal: horizontal)
+                case .down, .up, .hoverEnter, .hoverExit:
+                    break
+                default:
+                    throw NativeActivityInputError.unspecifiedSource
+                }
             default: break
             }
             
-        case .trackball, .touchpad, .touchNavigation, .stylus, .bluetoothStylus, .hdmi, .sensor, .rotaryEncoder:
+        case .any, .trackball, .touchpad, .touchNavigation, .stylus, .bluetoothStylus, .hdmi, .sensor, .rotaryEncoder:
             throw NativeActivityInputError.unspecifiedSource
         case .unknown: break
-        case .any:
-            print("any event source")
         }
     }
 }

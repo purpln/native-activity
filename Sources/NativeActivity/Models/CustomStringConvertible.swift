@@ -95,3 +95,31 @@ extension KeyEventMetaState: CustomStringConvertible {
         return "\(result)"
     }
 }
+
+extension MotionEventButton: CustomStringConvertible {
+    public var description: String {
+        var result: [String] = []
+        if contains(.primary) {
+            result.append("primary")
+        }
+        if contains(.secondary) {
+            result.append("secondary")
+        }
+        if contains(.tertiary) {
+            result.append("tertiary")
+        }
+        if contains(.back) {
+            result.append("back")
+        }
+        if contains(.forward) {
+            result.append("forward")
+        }
+        if contains(.stylusPrimary) {
+            result.append("stylusPrimary")
+        }
+        if contains(.stylusSecondary) {
+            result.append("stylusSecondary")
+        }
+        return "\(result)"
+    }
+}

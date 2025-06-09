@@ -5,6 +5,8 @@ public enum MotionEventAxis: CInt {
     case size        //AMOTION_EVENT_AXIS_SIZE
     case touchMajor  //AMOTION_EVENT_AXIS_TOUCH_MAJOR
     case touchMinor  //AMOTION_EVENT_AXIS_TOUCH_MINOR
+    case toolMajor   //AMOTION_EVENT_AXIS_TOOL_MAJOR
+    case toolMinor   //AMOTION_EVENT_AXIS_TOOL_MINOR
     case orientation //AMOTION_EVENT_AXIS_ORIENTATION
     case vScroll     //AMOTION_EVENT_AXIS_VSCROLL
     case hScroll     //AMOTION_EVENT_AXIS_HSCROLL
