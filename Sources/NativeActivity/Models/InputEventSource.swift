@@ -17,7 +17,7 @@ public enum InputEventSource: Equatable, Hashable, Sendable {
     case hdmi            //AINPUT_SOURCE_HDMI
     case sensor          //AINPUT_SOURCE_SENSOR
     case rotaryEncoder   //AINPUT_SOURCE_ROTARY_ENCODER
-    case any             //AINPUT_SOURCE_CLASS_NONE
+    case none            //AINPUT_SOURCE_CLASS_NONE
 }
 
 public extension InputEventSource {
@@ -39,7 +39,7 @@ public extension InputEventSource {
         case let event where (event & AINPUT_SOURCE_HDMI)             == AINPUT_SOURCE_HDMI:             self = .hdmi
         case let event where (event & AINPUT_SOURCE_SENSOR)           == AINPUT_SOURCE_SENSOR:           self = .sensor
         case let event where (event & AINPUT_SOURCE_ROTARY_ENCODER)   == AINPUT_SOURCE_ROTARY_ENCODER:   self = .rotaryEncoder
-        case 0xffffff00: self = .any
+        case 0xffffff00: self = .none
         default: return nil
         }
     }
