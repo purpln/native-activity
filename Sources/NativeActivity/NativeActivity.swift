@@ -614,3 +614,23 @@ private extension InputEventTool {
         self.init(rawValue: AMotionEvent_getToolType(event, pointer))
     }
 }
+
+import func Android.dlopen
+import func Android.dlclose
+import func Android.dlsym
+import var Android.RTLD_NOW
+
+private func AMotionEvent_getActionButton(_ event: OpaquePointer?) -> CInt {
+    guard let handle = dlopen("libandroid.so", RTLD_NOW) else {
+        preconditionFailure("unexpected result")
+    }
+    defer {
+        dlclose(handle)
+    }
+    guard let symbol = dlsym(handle, "AMotionEvent_getActionButton") else {
+        return MotionEventButton.primary.rawValue
+    }
+    typealias Function = @convention(c) (OpaquePointer?) -> CInt
+    let method = unsafeBitCast(symbol, to: Function.self)
+    return method(event)
+}
