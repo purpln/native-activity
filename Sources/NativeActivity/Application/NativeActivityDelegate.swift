@@ -60,4 +60,11 @@ public extension NativeActivityDelegate {
     func mouseUp(window: OpaquePointer?, x: Float, y: Float, index: Int) {}
     func mouseDragged(window: OpaquePointer?, x: Float, y: Float, index: Int) {}
     func mouseScroll(window: OpaquePointer?, x: Float, y: Float, vertical: Float, horizontal: Float) {}
+    
+    func toggle(key: KeyEventCode, value: Bool) {}
+    func dpad(x: Float, y: Float) {}
+    func leftThumbstick(x: Float, y: Float) {}
+    func rightThumbstick(x: Float, y: Float) {}
+    func leftTrigger(value: Float) {}
+    func rightTrigger(value: Float) {}
 }
