@@ -1,5 +1,6 @@
 import NativeAppGlue
 
+@MainActor
 protocol ApplicationCommand {
     func configurationChanged(app: UnsafeMutablePointer<android_app>)
     func saveState(app: UnsafeMutablePointer<android_app>)

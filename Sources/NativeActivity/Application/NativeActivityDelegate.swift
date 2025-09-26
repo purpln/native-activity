@@ -1,5 +1,6 @@
 import Android
 
+@MainActor
 public protocol NativeActivityDelegate: AnyObject {
     func launch()
     func destroy()

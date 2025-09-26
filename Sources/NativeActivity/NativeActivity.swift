@@ -11,7 +11,8 @@ private var instance: android_app {
     }
 }
 
-public class NativeActivity: @unchecked Sendable {
+@MainActor
+public class NativeActivity {
     public weak var delegate: NativeActivityDelegate?
     private var handler: Handler?
     private var state = ControllerState()

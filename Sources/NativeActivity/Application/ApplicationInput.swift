@@ -1,5 +1,6 @@
 import NativeAppGlue
 
+@MainActor
 protocol ApplicationInput {
     func input(app: UnsafeMutablePointer<android_app>, event: OpaquePointer?) throws
 }
